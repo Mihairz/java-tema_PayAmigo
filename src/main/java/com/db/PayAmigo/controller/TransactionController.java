@@ -2,7 +2,6 @@ package com.db.PayAmigo.controller;
 
 import com.db.PayAmigo.entity.Transaction;
 import com.db.PayAmigo.exception.InsufficientFundsException;
-import com.db.PayAmigo.exception.NonexistentDestinationError;
 import com.db.PayAmigo.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +37,7 @@ public class TransactionController {
     // Add Transaction--------------------------------------------------------------------------------------------------
 
     @PutMapping("/add-json")
-    public Transaction addTransactionJSON(@RequestBody Transaction Transaction) throws InsufficientFundsException, NonexistentDestinationError {
+    public Transaction addTransactionJSON(@RequestBody Transaction Transaction) throws InsufficientFundsException {
         return transactionService.save(Transaction);
     }
 

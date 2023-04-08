@@ -3,7 +3,6 @@ package com.db.PayAmigo.service;
 import com.db.PayAmigo.entity.Transaction;
 import com.db.PayAmigo.entity.Wallet;
 import com.db.PayAmigo.exception.InsufficientFundsException;
-import com.db.PayAmigo.exception.NonexistentDestinationError;
 import com.db.PayAmigo.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,23 +26,17 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public Transaction save(Transaction transaction) throws InsufficientFundsException, NonexistentDestinationError {
+    public Transaction save(Transaction transaction) throws InsufficientFundsException {
         Wallet source = transaction.getSource_id();
         Wallet destination = transaction.getDestination_id();
-        System.out.println("DESTINATION: "+destination);
         float amount = transaction.getAmount();
 
-
-        if(walletService.findBywalletId(destination.getId()) != null) {
-            if (amount <= source.getBalance()) {
-                walletService.findBywalletId(source.getId()).setBalance(source.getBalance() - amount);
-                walletService.findBywalletId(destination.getId()).setBalance(destination.getBalance() + amount);
-                return transactionRepository.save(transaction);
-            } else {
-                throw new InsufficientFundsException();
-            }
-        }else {
-            throw new NonexistentDestinationError();
+        if (amount <= source.getBalance()){
+            walletService.findBywalletId(source.getId()).setBalance(source.getBalance() - amount);
+            walletService.findBywalletId(destination.getId()).setBalance(destination.getBalance() + amount);
+            return transactionRepository.save(transaction);
+        }else{
+            throw new InsufficientFundsException();
         }
     }
 

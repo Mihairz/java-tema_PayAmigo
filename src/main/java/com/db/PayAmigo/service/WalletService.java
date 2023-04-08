@@ -14,6 +14,7 @@ public class WalletService {
     @Autowired
     WalletRepository walletRepository;
 
+
     public List<Wallet> findAllwallets() {
         return walletRepository.findAll();
     }
