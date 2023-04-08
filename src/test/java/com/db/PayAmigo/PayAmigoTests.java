@@ -8,6 +8,7 @@ import com.db.PayAmigo.service.TransactionService;
 import com.db.PayAmigo.service.WalletService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,7 +26,7 @@ public class PayAmigoTests {
     Wallet destinationTest = new Wallet("Economic",testUser2,400,"eur");
     Transaction transactionTest = new Transaction(sourceTest, destinationTest,0f,0f,0f,"eur","today");
 
-    @Test
+    @RepeatedTest(10)
     @DisplayName("Source amount > source balance throws Insufficient Funds exception")
     public void InsufficientFundsExceptionTest() {
         sourceTest.setBalance(100);
@@ -36,19 +37,19 @@ public class PayAmigoTests {
         });
     }
 
-    @Test
+    @RepeatedTest(5)
     @DisplayName("Nonexistent destination wallet")
     public void nonexistentDestinationWalletTest(){
         Assertions.assertNotNull(destinationTest);
     }
 
-    @Test
+    @RepeatedTest(7)
     @DisplayName("Nonexistent source wallet")
     public void nonexistentSourceWalletTest(){
         Assertions.assertNotNull(sourceTest);
     }
 
-    @Test
+    @RepeatedTest(2)
     @DisplayName("Nonexistent user for wallet")
     public void nonexistentUserForWalletTest(){
         Assertions.assertNotNull(sourceTest.getUser_id());
